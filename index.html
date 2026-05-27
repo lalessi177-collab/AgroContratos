@@ -1,0 +1,559 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AgroContratos — Estanar S.A. | DEMO</title>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@2.44.0/tabler-icons.min.css">
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:Arial,sans-serif;font-size:14px;background:#f0f2f0;color:#1a1a1a}
+.app{max-width:1100px;margin:0 auto;padding:1rem}
+.demo-banner{background:#E8B84B;color:#412402;font-size:12px;font-weight:600;text-align:center;padding:6px;letter-spacing:0.05em}
+.topbar{background:#1a5c38;padding:0 20px;height:56px;display:flex;align-items:center;justify-content:space-between;border-radius:10px;margin-bottom:1rem}
+.bw{padding:5px 12px;border-radius:6px;font-size:12px;cursor:pointer;border:0.5px solid rgba(255,255,255,0.35);background:rgba(255,255,255,0.12);color:#fff}
+.bw:hover{background:rgba(255,255,255,0.22)}
+.bw-white{background:rgba(255,255,255,0.9);color:#1a5c38;font-weight:600;border:none}
+.sd{width:7px;height:7px;border-radius:50%;background:#5DCAA5;display:inline-block;margin-right:4px}
+.tabs{display:flex;gap:0;border-bottom:1px solid #ddd;margin-bottom:1.5rem;background:#fff;border-radius:8px 8px 0 0;overflow:hidden}
+.tab{padding:10px 18px;cursor:pointer;font-size:13px;color:#666;border:none;background:none;border-bottom:2px solid transparent;white-space:nowrap}
+.tab.active{color:#1a5c38;border-bottom:2px solid #1a5c38;font-weight:600}
+.tab:hover:not(.active){background:#f9f9f9}
+.section{display:none}.section.active{display:block}
+.card{background:#fff;border:1px solid #e5e5e5;border-radius:10px;padding:1rem 1.25rem;margin-bottom:1rem}
+.card-title{font-size:11px;font-weight:600;color:#888;text-transform:uppercase;letter-spacing:0.05em;margin-bottom:12px}
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.grid3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px}
+.grid4{display:grid;grid-template-columns:repeat(4,1fr);gap:12px}
+.field{display:flex;flex-direction:column;gap:4px}
+.field label{font-size:12px;color:#666;font-weight:500}
+.field input,.field select,.field textarea{padding:7px 10px;border:1px solid #ddd;border-radius:6px;font-size:13px;background:#fff;color:#1a1a1a;width:100%}
+.field textarea{resize:vertical;min-height:60px}
+.btn{padding:7px 14px;border-radius:6px;font-size:13px;cursor:pointer;border:1px solid #ddd;background:#fff;color:#1a1a1a}
+.btn:hover{background:#f5f5f5}
+.btn-primary{background:#1a5c38;color:#fff;border-color:#1a5c38}
+.btn-primary:hover{background:#155030}
+.btn-danger{color:#A32D2D;border-color:#F7C1C1}
+.btn-danger:hover{background:#FCEBEB}
+.btn-success{color:#3B6D11;border-color:#C0DD97}
+.btn-success:hover{background:#EAF3DE}
+.btn-row{display:flex;gap:8px;align-items:center;flex-wrap:wrap}
+.badge{display:inline-block;padding:2px 8px;border-radius:9999px;font-size:11px;font-weight:500}
+.badge-pending{background:#FAEEDA;color:#854F0B}
+.badge-partial{background:#E6F1FB;color:#185FA5}
+.badge-done{background:#EAF3DE;color:#3B6D11}
+.badge-cancelled{background:#FCEBEB;color:#A32D2D}
+.table-wrap{overflow-x:auto}
+table{width:100%;border-collapse:collapse;font-size:13px}
+th{text-align:left;padding:8px 10px;font-size:11px;font-weight:600;color:#888;border-bottom:1px solid #eee;white-space:nowrap;background:#fafafa}
+td{padding:8px 10px;border-bottom:1px solid #f0f0f0;vertical-align:middle}
+tr:hover td{background:#fafafa}
+.progress-bar{height:6px;background:#eee;border-radius:9999px;overflow:hidden;min-width:80px;display:inline-block;vertical-align:middle}
+.progress-fill{height:100%;background:#1a5c38;border-radius:9999px}
+.metric-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(130px,1fr));gap:12px;margin-bottom:1.5rem}
+.metric{background:#fff;border:1px solid #e5e5e5;border-radius:10px;padding:1rem;text-align:center}
+.metric-val{font-size:24px;font-weight:700}
+.metric-lbl{font-size:11px;color:#888;margin-top:4px}
+.alert-amber{background:#FAEEDA;color:#854F0B;border:1px solid #FAC775;padding:8px 12px;border-radius:8px;font-size:13px;margin-bottom:1rem}
+.alert-green{background:#EAF3DE;color:#3B6D11;border:1px solid #C0DD97;padding:8px 12px;border-radius:8px;font-size:13px;margin-bottom:1rem}
+.alert-red{background:#FCEBEB;color:#A32D2D;border:1px solid #F7C1C1;padding:8px 12px;border-radius:8px;font-size:13px;margin-bottom:1rem}
+.row-data{display:flex;justify-content:space-between;font-size:13px;padding:5px 0;border-bottom:1px solid #f0f0f0}
+.row-data:last-child{border-bottom:none}
+.row-data span:first-child{color:#888}
+.footer{background:#f5f5f5;border-top:1px solid #e5e5e5;padding:10px 20px;display:flex;align-items:center;justify-content:space-between;border-radius:0 0 10px 10px;margin-top:2rem}
+.log-card{background:#fff;border:1px solid #e5e5e5;border-radius:10px;padding:1rem 1.25rem;margin-bottom:10px}
+.log-card.urgente{border-left:4px solid #A32D2D}
+.log-card.atencion{border-left:4px solid #854F0B}
+.log-card.ok{border-left:4px solid #1a5c38}
+.entrega-header{display:grid;grid-template-columns:1.2fr 0.8fr 1.8fr 1.8fr auto;gap:8px;font-size:11px;font-weight:600;color:#888;padding:4px 0;border-bottom:1px solid #eee;margin-bottom:6px}
+.entrega-row{display:grid;grid-template-columns:1.2fr 0.8fr 1.8fr 1.8fr auto;gap:8px;align-items:center;font-size:12px;padding:4px 0;border-bottom:1px solid #f8f8f8}
+</style>
+</head>
+<body>
+
+<div class="demo-banner">⚠ VERSIÓN DE DEMOSTRACIÓN — Datos de ejemplo para evaluación interna</div>
+
+<div class="app">
+
+<div class="topbar">
+  <div style="display:flex;align-items:center;gap:16px">
+    <div style="border-right:0.5px solid rgba(255,255,255,0.3);padding-right:16px;line-height:1.15">
+      <div style="font-family:'Georgia',serif;font-size:20px;font-weight:700;color:#fff;letter-spacing:3px">ESTANAR</div>
+      <div style="font-family:'Georgia',serif;font-size:10px;color:rgba(255,255,255,0.75);letter-spacing:2.5px;text-align:right">S.A.</div>
+    </div>
+    <div>
+      <div style="font-size:14px;font-weight:500;color:#fff">AgroContratos</div>
+      <div style="font-size:11px;color:rgba(255,255,255,0.65)">Plataforma de logística y cumplimiento de granos</div>
+    </div>
+  </div>
+  <div style="display:flex;gap:8px;align-items:center">
+    <span style="font-size:11px;color:rgba(255,255,255,0.7)"><span class="sd"></span>Demo activa</span>
+    <button class="bw" onclick="exportCSV()"><i class="ti ti-download"></i> Exportar CSV</button>
+    <button class="bw bw-white" onclick="showTab('nuevo')"><i class="ti ti-plus"></i> Nuevo contrato</button>
+  </div>
+</div>
+
+<div class="tabs">
+  <button class="tab active" onclick="showTab('dashboard')"><i class="ti ti-layout-dashboard"></i> Dashboard</button>
+  <button class="tab" onclick="showTab('contratos')"><i class="ti ti-file-text"></i> Contratos</button>
+  <button class="tab" onclick="showTab('logistica')"><i class="ti ti-truck"></i> Logística</button>
+  <button class="tab" onclick="showTab('nuevo')"><i class="ti ti-plus"></i> Nuevo contrato</button>
+</div>
+
+<!-- DASHBOARD -->
+<div id="tab-dashboard" class="section active">
+  <div class="metric-grid" id="metrics"></div>
+  <div class="grid2">
+    <div class="card">
+      <div class="card-title"><i class="ti ti-alert-triangle"></i> Alertas — contratos por vencer</div>
+      <div id="vencer-list"></div>
+    </div>
+    <div class="card">
+      <div class="card-title"><i class="ti ti-chart-bar"></i> Cumplimiento por grano</div>
+      <div id="granos-chart"></div>
+    </div>
+  </div>
+  <div class="card">
+    <div class="card-title"><i class="ti ti-truck"></i> Resumen de logística activa</div>
+    <div id="log-resumen"></div>
+  </div>
+</div>
+
+<!-- CONTRATOS -->
+<div id="tab-contratos" class="section">
+  <div style="display:flex;gap:8px;margin-bottom:1rem;flex-wrap:wrap;align-items:center">
+    <input type="text" placeholder="Buscar por N° contrato, comprador o vendedor..." style="flex:1;min-width:220px;padding:7px 10px;border:1px solid #ddd;border-radius:6px;font-size:13px" id="search-input" oninput="renderTabla()">
+    <select onchange="filtroEstado=this.value;renderTabla()" style="padding:7px 10px;border:1px solid #ddd;border-radius:6px;font-size:13px">
+      <option value="">Todos los estados</option>
+      <option>Pendiente</option><option>En curso</option><option>Cumplido</option><option>Cancelado</option>
+    </select>
+    <select onchange="filtroGrano=this.value;renderTabla()" style="padding:7px 10px;border:1px solid #ddd;border-radius:6px;font-size:13px">
+      <option value="">Todos los granos</option>
+      <option>Trigo</option><option>Maíz</option><option>Soja</option><option>Girasol</option><option>Cebada</option><option>Sorgo</option>
+    </select>
+  </div>
+  <div class="table-wrap">
+    <table>
+      <thead><tr>
+        <th>N° Contrato</th><th>Grano</th><th>Comprador</th><th>Vendedor</th>
+        <th>Tn</th><th>Precio</th><th>Vencimiento</th><th>Cumplimiento</th><th>Estado</th><th>Acciones</th>
+      </tr></thead>
+      <tbody id="tabla-body"></tbody>
+    </table>
+  </div>
+  <div id="detalle-panel"></div>
+</div>
+
+<!-- LOGÍSTICA -->
+<div id="tab-logistica" class="section">
+  <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:1rem">
+    <div style="font-size:13px;color:#666">Contratos activos ordenados por urgencia de vencimiento</div>
+    <select onchange="filtroLogGrano=this.value;renderLogistica()" style="padding:6px 10px;border:1px solid #ddd;border-radius:6px;font-size:12px">
+      <option value="">Todos los granos</option>
+      <option>Soja</option><option>Maíz</option><option>Trigo</option><option>Girasol</option><option>Cebada</option>
+    </select>
+  </div>
+  <div id="log-list"></div>
+</div>
+
+<!-- NUEVO CONTRATO -->
+<div id="tab-nuevo" class="section">
+  <div class="card">
+    <div class="card-title"><i class="ti ti-file-description"></i> Datos del contrato</div>
+    <div class="grid3" style="gap:12px">
+      <div class="field"><label>N° de contrato</label><input id="f-num" placeholder="Ej: 26S08"></div>
+      <div class="field"><label>Grano / Cereal</label><select id="f-grano"><option>Trigo</option><option>Maíz</option><option>Soja</option><option>Girasol</option><option>Cebada</option><option>Sorgo</option><option>Otro</option></select></div>
+      <div class="field"><label>Calidad / Condición</label><input id="f-calidad" placeholder="Ej: Grado 2, Húmedo 14%"></div>
+    </div>
+    <div class="grid2" style="margin-top:12px">
+      <div class="field"><label>Comprador</label><input id="f-comprador" placeholder="Razón social"></div>
+      <div class="field"><label>Vendedor / Productor</label><input id="f-vendedor" value="Estanar Estancias Arg. S.A."></div>
+    </div>
+    <div class="grid3" style="margin-top:12px">
+      <div class="field"><label>Toneladas contratadas</label><input id="f-tons" type="number" min="0" placeholder="500"></div>
+      <div class="field"><label>Precio ($/tn)</label><input id="f-precio" type="number" min="0" placeholder="285"></div>
+      <div class="field"><label>Moneda</label><select id="f-moneda"><option>ARS</option><option>USD</option></select></div>
+    </div>
+    <div class="grid2" style="margin-top:12px">
+      <div class="field"><label>Fecha de contrato</label><input id="f-fecha" type="date"></div>
+      <div class="field"><label>Fecha de vencimiento</label><input id="f-vence" type="date"></div>
+    </div>
+    <div class="field" style="margin-top:12px"><label>Lugar de entrega</label><input id="f-lugar" placeholder="Ej: Puerto Rosario — Terminal 6"></div>
+    <div class="field" style="margin-top:12px"><label>Observaciones</label><textarea id="f-obs" placeholder="Condiciones especiales, notas..."></textarea></div>
+  </div>
+  <div class="card">
+    <div class="card-title"><i class="ti ti-truck"></i> Logística</div>
+    <div class="grid2">
+      <div class="field"><label>Transportista / Empresa</label><input id="f-trans" placeholder="Nombre empresa de transporte"></div>
+      <div class="field"><label>Teléfono</label><input id="f-tel" placeholder="+54 341..."></div>
+    </div>
+    <div class="grid2" style="margin-top:12px">
+      <div class="field"><label>N° de camiones estimados</label><input id="f-camiones" type="number" min="0"></div>
+      <div class="field"><label>Toneladas por viaje (prom.)</label><input id="f-tons-viaje" type="number" min="0" placeholder="28"></div>
+    </div>
+  </div>
+  <div class="card">
+    <div class="card-title"><i class="ti ti-receipt"></i> Facturación y pago</div>
+    <div class="grid3">
+      <div class="field"><label>Condición de pago</label><select id="f-pago"><option>Contado</option><option>A precio</option><option>A fijar</option><option>30 días</option><option>60 días</option><option>Otro</option></select></div>
+      <div class="field"><label>N° factura (si aplica)</label><input id="f-factura" placeholder="FA-0001-00004521"></div>
+      <div class="field"><label>Estado de pago</label><select id="f-estadopago"><option>Pendiente</option><option>Parcial</option><option>Pagado</option></select></div>
+    </div>
+  </div>
+  <div id="form-error" style="display:none" class="alert-amber"></div>
+  <div class="btn-row">
+    <button class="btn btn-primary" onclick="guardarContrato()"><i class="ti ti-check"></i> Guardar contrato</button>
+    <button class="btn" onclick="limpiarForm()">Limpiar</button>
+  </div>
+</div>
+
+<div class="footer">
+  <div style="display:flex;align-items:center;gap:8px">
+    <span style="font-family:'Georgia',serif;font-size:13px;font-weight:700;letter-spacing:2px;color:#1a5c38">ESTANAR</span>
+    <span style="font-size:11px;color:#888">Estancias Argentinas S.A.</span>
+  </div>
+  <div style="display:flex;align-items:center;gap:6px;font-size:11px;color:#888">
+    Desarrollado por
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 160 44" style="height:16px;vertical-align:middle">
+      <circle cx="14" cy="14" r="7" fill="#E8B84B"/>
+      <circle cx="30" cy="14" r="9" fill="#1a1a1a"/>
+      <line x1="14" y1="14" x2="30" y2="14" stroke="#1a1a1a" stroke-width="2"/>
+      <circle cx="22" cy="30" r="9" fill="#1a1a1a"/>
+      <circle cx="38" cy="30" r="7" fill="#E8B84B"/>
+      <line x1="30" y1="14" x2="22" y2="30" stroke="#1a1a1a" stroke-width="2"/>
+      <text x="48" y="34" font-family="Georgia,serif" font-size="26" font-weight="700" fill="#1a1a1a">L5A.IO</text>
+    </svg>
+  </div>
+</div>
+
+</div>
+
+<script>
+const DEMO_DATA = [{"num":"26S04","grano":"Soja","calidad":"Campaña 25-26","comprador":"Tomas Hnos. y Cia S.A.","vendedor":"Estanar Estancias Arg. S.A.","tons":"225","precio":"0","moneda":"USD","fecha":"2026-04-30","vence":"2026-05-30","lugar":"Urdamp (rr)","obs":"A fijar 31/12/25 — 3 plazos — USD 35 gastos flete salida + paritaria","trans":"Transportes Del Campo S.A.","tel":"+54 341 455-1200","camiones":"8","tonsViaje":"28","pago":"A fijar","factura":"","estadopago":"Pendiente","estado":"En curso","entregas":[{"fecha":"2026-04-27","tons":"31.44","remito":"CPE-00001-00010693","chofer":"Ramírez, Jorge — ABC 123"},{"fecha":"2026-04-27","tons":"31.02","remito":"CPE-00001-00010695","chofer":"González, Luis — DEF 456"},{"fecha":"2026-04-28","tons":"31.36","remito":"CPE-00001-00010704","chofer":"Fernández, Mario — GHI 789"},{"fecha":"2026-04-29","tons":"30.94","remito":"CPE-00001-00010726","chofer":"López, Carlos — JKL 012"},{"fecha":"2026-04-29","tons":"32.30","remito":"CPE-00001-00010728","chofer":"Martínez, Pablo — MNO 345"},{"fecha":"2026-04-30","tons":"33.06","remito":"CPE-00001-00010748","chofer":"Rodríguez, Héctor — PQR 678"}]},{"num":"26S07","grano":"Soja","calidad":"Campaña 25-26","comprador":"AgroSur S.A.","vendedor":"Estanar Estancias Arg. S.A.","tons":"400","precio":"285","moneda":"USD","fecha":"2026-04-15","vence":"2026-05-31","lugar":"Puerto Rosario — Terminal 6","obs":"Precio fijo USD 285/tn. Flete por cuenta del comprador.","trans":"Fletes Norte S.R.L.","tel":"+54 336 422-7890","camiones":"15","tonsViaje":"27","pago":"Contado","factura":"FA-0001-00004521","estadopago":"Parcial","estado":"En curso","entregas":[{"fecha":"2026-04-18","tons":"54.20","remito":"CPE-00001-00009801","chofer":"Suárez, Diego — STU 111"},{"fecha":"2026-04-20","tons":"52.80","remito":"CPE-00001-00009834","chofer":"Pérez, Norberto — VWX 222"},{"fecha":"2026-04-23","tons":"55.10","remito":"CPE-00001-00009901","chofer":"Castro, Ernesto — YZA 333"},{"fecha":"2026-04-25","tons":"38.60","remito":"CPE-00001-00009945","chofer":"Romero, Gustavo — BCD 444"}]},{"num":"26M03","grano":"Maíz","calidad":"Grado 2 — Humedad 14%","comprador":"Cargill S.A.","vendedor":"Estanar Estancias Arg. S.A.","tons":"800","precio":"82000","moneda":"ARS","fecha":"2026-03-01","vence":"2026-06-15","lugar":"Planta San Lorenzo — Cargill","obs":"Descuento por merma según tabla BCBA. Camiones con carta de porte AFIP.","trans":"Trans Pampa S.A.","tel":"+54 11 4832-5500","camiones":"30","tonsViaje":"26","pago":"30 días","factura":"FA-0001-00004398","estadopago":"Parcial","estado":"En curso","entregas":[{"fecha":"2026-03-10","tons":"78.20","remito":"CPE-00001-00008201","chofer":"Villalba, Omar — EFG 555"},{"fecha":"2026-03-14","tons":"79.80","remito":"CPE-00001-00008245","chofer":"Acosta, Roberto — HIJ 666"},{"fecha":"2026-03-18","tons":"77.50","remito":"CPE-00001-00008290","chofer":"Torres, Miguel — KLM 777"},{"fecha":"2026-03-22","tons":"80.10","remito":"CPE-00001-00008334","chofer":"Medina, Claudio — NOP 888"},{"fecha":"2026-03-28","tons":"81.40","remito":"CPE-00001-00008401","chofer":"Herrera, Fabián — QRS 999"},{"fecha":"2026-04-05","tons":"79.90","remito":"CPE-00001-00008456","chofer":"Núñez, Sergio — TUV 000"},{"fecha":"2026-04-12","tons":"80.60","remito":"CPE-00001-00008521","chofer":"Campos, Walter — WXY 111"}]},{"num":"25T02","grano":"Trigo","calidad":"Grado 1 Pan","comprador":"Molinos Río de la Plata S.A.","vendedor":"Estanar Estancias Arg. S.A.","tons":"300","precio":"210","moneda":"USD","fecha":"2025-11-10","vence":"2026-01-31","lugar":"Molinos Río de la Plata — Dock Sud","obs":"Entrega completa. Liquidado.","trans":"Logística Sur S.A.","tel":"+54 11 5555-9000","camiones":"11","tonsViaje":"27","pago":"Contado","factura":"FA-0001-00003901","estadopago":"Pagado","estado":"Cumplido","entregas":[{"fecha":"2025-12-02","tons":"81.00","remito":"CPE-00001-00006701","chofer":"Ríos, Antonio — ZAB 123"},{"fecha":"2025-12-09","tons":"82.50","remito":"CPE-00001-00006745","chofer":"Mora, Eduardo — CDE 456"},{"fecha":"2025-12-15","tons":"80.20","remito":"CPE-00001-00006789","chofer":"Vargas, Julio — FGH 789"},{"fecha":"2025-12-22","tons":"56.30","remito":"CPE-00001-00006834","chofer":"Silva, Marcelo — IJK 012"}]},{"num":"26G01","grano":"Girasol","calidad":"Alto oleico — Campaña 25-26","comprador":"Oleaginosa General Deheza S.A.","vendedor":"Estanar Estancias Arg. S.A.","tons":"180","precio":"390","moneda":"USD","fecha":"2026-04-01","vence":"2026-06-30","lugar":"Planta General Deheza — Córdoba","obs":"Alto oleico certificado. Requiere análisis de calidad previo.","trans":"Cereales Del Centro S.R.L.","tel":"+54 358 462-3300","camiones":"7","tonsViaje":"26","pago":"A fijar","factura":"","estadopago":"Pendiente","estado":"En curso","entregas":[{"fecha":"2026-04-20","tons":"52.40","remito":"CPE-00001-00010101","chofer":"Benítez, Ricardo — LMN 345"},{"fecha":"2026-04-27","tons":"51.80","remito":"CPE-00001-00010188","chofer":"Peralta, Dante — OPQ 678"}]},{"num":"26C02","grano":"Cebada","calidad":"Cervecera — Humedad 12%","comprador":"Maltería Pampa S.A.","vendedor":"Estanar Estancias Arg. S.A.","tons":"150","precio":"195","moneda":"USD","fecha":"2026-05-01","vence":"2026-07-15","lugar":"Maltería Pampa — Tres Arroyos","obs":"Calidad cervecera certificada. Proteína máx. 11.5%.","trans":"Transportes Pampeanos S.A.","tel":"+54 2983 420-100","camiones":"6","tonsViaje":"25","pago":"60 días","factura":"","estadopago":"Pendiente","estado":"Pendiente","entregas":[]}];
+
+let contratos = JSON.parse(localStorage.getItem('agro_demo_contratos') || 'null') || JSON.parse(JSON.stringify(DEMO_DATA));
+let filtroEstado='', filtroGrano='', filtroLogGrano='', contratoEditando=null, detalleAbierto=-1;
+
+function save(){ try{ localStorage.setItem('agro_demo_contratos', JSON.stringify(contratos)); }catch(e){} }
+
+function showTab(t){
+  document.querySelectorAll('.section').forEach(s=>s.classList.remove('active'));
+  document.querySelectorAll('.tab').forEach(b=>b.classList.remove('active'));
+  document.getElementById('tab-'+t).classList.add('active');
+  document.querySelectorAll('.tab').forEach(b=>{ if(b.getAttribute('onclick')===`showTab('${t}')`) b.classList.add('active'); });
+  if(t==='dashboard') renderDash();
+  if(t==='contratos') renderTabla();
+  if(t==='logistica') renderLogistica();
+}
+
+function estadoBadge(e){
+  const m={'Pendiente':'badge-pending','En curso':'badge-partial','Cumplido':'badge-done','Cancelado':'badge-cancelled'};
+  return `<span class="badge ${m[e]||'badge-pending'}">${e}</span>`;
+}
+
+function calcCumplimiento(c){
+  if(!c.entregas||!c.tons) return 0;
+  const total = c.entregas.reduce((a,e)=>a+(parseFloat(e.tons)||0),0);
+  return Math.min(100, Math.round(total/parseFloat(c.tons)*100));
+}
+
+function pb(pct, w){
+  const color = pct>=100?'#1a5c38':pct>=50?'#378ADD':'#EF9F27';
+  return `<div style="display:flex;align-items:center;gap:6px"><div class="progress-bar" style="width:${w||80}px"><div class="progress-fill" style="width:${pct}%;background:${color}"></div></div><span style="font-size:11px;color:#888">${pct}%</span></div>`;
+}
+
+function diasParaVencer(vence){
+  if(!vence) return 999;
+  const hoy = new Date(); hoy.setHours(0,0,0,0);
+  const v = new Date(vence+'T00:00:00');
+  return Math.round((v-hoy)/(1000*60*60*24));
+}
+
+function renderDash(){
+  const activos = contratos.filter(c=>c.estado!=='Cancelado'&&c.estado!=='Cumplido');
+  const enCurso = contratos.filter(c=>c.estado==='En curso').length;
+  const pendiente = contratos.filter(c=>c.estado==='Pendiente').length;
+  const cumplido = contratos.filter(c=>c.estado==='Cumplido').length;
+  const tonTotal = contratos.reduce((a,c)=>a+(parseFloat(c.tons)||0),0);
+  const tonEntregada = contratos.reduce((a,c)=>{
+    if(!c.entregas) return a;
+    return a+c.entregas.reduce((b,e)=>b+(parseFloat(e.tons)||0),0);
+  },0);
+
+  document.getElementById('metrics').innerHTML=`
+    <div class="metric"><div class="metric-val">${contratos.length}</div><div class="metric-lbl">Contratos totales</div></div>
+    <div class="metric"><div class="metric-val" style="color:#185FA5">${enCurso}</div><div class="metric-lbl">En curso</div></div>
+    <div class="metric"><div class="metric-val" style="color:#854F0B">${pendiente}</div><div class="metric-lbl">Pendientes</div></div>
+    <div class="metric"><div class="metric-val" style="color:#1a5c38">${cumplido}</div><div class="metric-lbl">Cumplidos</div></div>
+    <div class="metric"><div class="metric-val">${tonTotal.toLocaleString('es-AR')}</div><div class="metric-lbl">Tn contratadas</div></div>
+    <div class="metric"><div class="metric-val" style="color:#1a5c38">${Math.round(tonEntregada).toLocaleString('es-AR')}</div><div class="metric-lbl">Tn entregadas</div></div>`;
+
+  // Alertas por vencimiento
+  const porVencer = contratos.filter(c=>c.estado!=='Cumplido'&&c.estado!=='Cancelado')
+    .map(c=>({...c, dias: diasParaVencer(c.vence)}))
+    .filter(c=>c.dias<=30)
+    .sort((a,b)=>a.dias-b.dias);
+
+  document.getElementById('vencer-list').innerHTML = porVencer.length===0
+    ? '<div style="text-align:center;padding:1.5rem;color:#888;font-size:13px">Sin contratos por vencer en 30 días</div>'
+    : porVencer.map(c=>{
+        const color = c.dias<=7?'#A32D2D':c.dias<=15?'#854F0B':'#666';
+        const pct = calcCumplimiento(c);
+        return `<div style="display:flex;justify-content:space-between;align-items:center;padding:8px 0;border-bottom:1px solid #f0f0f0">
+          <div>
+            <span style="font-weight:600">${c.num}</span>
+            <span style="font-size:11px;background:#f0f0f0;padding:1px 6px;border-radius:4px;margin:0 6px">${c.grano}</span>
+            ${pb(pct, 60)}
+          </div>
+          <div style="text-align:right">
+            <div style="font-size:12px;color:${color};font-weight:600">${c.dias<=0?'¡VENCIDO!':c.dias===1?'Vence mañana':'Vence en '+c.dias+' días'}</div>
+            <div style="font-size:11px;color:#888">${c.vence}</div>
+          </div>
+        </div>`;
+      }).join('');
+
+  // Cumplimiento por grano
+  const granos = {};
+  contratos.forEach(c=>{
+    if(!granos[c.grano]) granos[c.grano]={tons:0,entregado:0,contratos:0};
+    granos[c.grano].tons += parseFloat(c.tons)||0;
+    granos[c.grano].contratos++;
+    if(c.entregas) c.entregas.forEach(e=>granos[c.grano].entregado+=parseFloat(e.tons)||0);
+  });
+  document.getElementById('granos-chart').innerHTML = Object.entries(granos).map(([g,d])=>{
+    const pct = d.tons>0?Math.min(100,Math.round(d.entregado/d.tons*100)):0;
+    const color = pct>=100?'#1a5c38':pct>=60?'#378ADD':'#EF9F27';
+    return `<div style="margin-bottom:12px">
+      <div style="display:flex;justify-content:space-between;font-size:12px;margin-bottom:4px">
+        <span style="font-weight:600">${g} <span style="font-weight:400;color:#888">(${d.contratos} contrato${d.contratos!==1?'s':''})</span></span>
+        <span style="color:#888">${Math.round(d.entregado).toLocaleString('es-AR')} / ${Math.round(d.tons).toLocaleString('es-AR')} tn</span>
+      </div>
+      <div class="progress-bar" style="height:10px;width:100%;display:block"><div class="progress-fill" style="width:${pct}%;background:${color}"></div></div>
+      <div style="font-size:11px;color:#888;text-align:right;margin-top:2px">${pct}% cumplido</div>
+    </div>`;
+  }).join('');
+
+  // Resumen logística
+  const activos2 = contratos.filter(c=>c.estado==='En curso'||c.estado==='Pendiente');
+  document.getElementById('log-resumen').innerHTML = `
+    <table style="width:100%">
+      <thead><tr><th>Contrato</th><th>Grano</th><th>Destino</th><th>Transportista</th><th>Tn restantes</th><th>Viajes pend.</th><th>Vence</th></tr></thead>
+      <tbody>${activos2.map(c=>{
+        const tonEnt = c.entregas?c.entregas.reduce((a,e)=>a+(parseFloat(e.tons)||0),0):0;
+        const tonRest = Math.max(0,(parseFloat(c.tons)||0)-tonEnt);
+        const viajes = c.tonsViaje&&c.tonsViaje>0?Math.ceil(tonRest/parseFloat(c.tonsViaje)):'—';
+        const dias = diasParaVencer(c.vence);
+        const color = dias<=7?'#A32D2D':dias<=15?'#854F0B':'inherit';
+        return `<tr><td style="font-weight:600">${c.num}</td><td>${c.grano}</td><td style="font-size:12px">${c.lugar||'—'}</td><td style="font-size:12px">${c.trans||'—'}</td><td style="font-weight:600;color:${tonRest>0?'#854F0B':'#1a5c38'}">${tonRest.toLocaleString('es-AR')} tn</td><td style="text-align:center">${viajes}</td><td style="color:${color};font-weight:600;font-size:12px">${c.vence||'—'}</td></tr>`;
+      }).join('')}</tbody>
+    </table>`;
+}
+
+function renderTabla(){
+  const q=(document.getElementById('search-input')||{}).value||'';
+  const rows = contratos.filter(c=>{
+    const match=!q||(c.num+c.comprador+c.vendedor).toLowerCase().includes(q.toLowerCase());
+    return match&&(!filtroEstado||c.estado===filtroEstado)&&(!filtroGrano||c.grano===filtroGrano);
+  });
+  const tbody = document.getElementById('tabla-body');
+  if(rows.length===0){ tbody.innerHTML=`<tr><td colspan="10" style="text-align:center;padding:2rem;color:#888">Sin contratos que coincidan.</td></tr>`; return; }
+  tbody.innerHTML = rows.map(c=>{
+    const idx=contratos.indexOf(c); const pct=calcCumplimiento(c);
+    const dias=diasParaVencer(c.vence);
+    const venceColor=dias<=7&&c.estado!=='Cumplido'?'color:#A32D2D;font-weight:600':dias<=15&&c.estado!=='Cumplido'?'color:#854F0B':'';
+    return `<tr>
+      <td style="font-weight:600">${c.num}</td>
+      <td>${c.grano}</td>
+      <td style="font-size:12px">${c.comprador}</td>
+      <td style="font-size:12px">${c.vendedor}</td>
+      <td>${(parseFloat(c.tons)||0).toLocaleString('es-AR')}</td>
+      <td style="font-size:12px">${c.precio==='0'||!c.precio?'<span class="badge badge-pending">A fijar</span>':c.moneda+' '+(parseFloat(c.precio)||0).toLocaleString('es-AR')}</td>
+      <td style="font-size:12px;${venceColor}">${c.vence||'—'}</td>
+      <td>${pb(pct,70)}</td>
+      <td>${estadoBadge(c.estado)}</td>
+      <td>
+        <div class="btn-row" style="gap:4px">
+          <button class="btn" style="padding:3px 10px;font-size:12px" onclick="toggleDetalle(${idx})"><i class="ti ti-eye"></i></button>
+          <button class="btn" style="padding:3px 10px;font-size:12px" onclick="editarContrato(${idx})"><i class="ti ti-edit"></i></button>
+          <button class="btn btn-danger" style="padding:3px 10px;font-size:12px" onclick="eliminarContrato(${idx})"><i class="ti ti-trash"></i></button>
+        </div>
+      </td>
+    </tr>`;
+  }).join('');
+}
+
+function toggleDetalle(idx){
+  const panel=document.getElementById('detalle-panel');
+  if(detalleAbierto===idx){detalleAbierto=-1;panel.innerHTML='';return;}
+  detalleAbierto=idx; const c=contratos[idx]; const pct=calcCumplimiento(c);
+  const tonEnt=c.entregas?c.entregas.reduce((a,e)=>a+(parseFloat(e.tons)||0),0):0;
+  panel.innerHTML=`<div class="card" style="margin-top:1rem;border-top:3px solid #1a5c38">
+    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:1rem">
+      <div><span style="font-size:16px;font-weight:700">${c.num}</span> — <span style="font-size:14px">${c.grano}</span> <span style="font-size:12px;color:#888">${c.calidad||''}</span></div>
+      <button class="btn" onclick="detalleAbierto=-1;document.getElementById('detalle-panel').innerHTML=''"><i class="ti ti-x"></i> Cerrar</button>
+    </div>
+    <div class="grid3" style="gap:12px;margin-bottom:1rem">
+      <div><div style="font-size:11px;color:#888">Comprador</div><div style="font-weight:600">${c.comprador}</div></div>
+      <div><div style="font-size:11px;color:#888">Vendedor</div><div>${c.vendedor}</div></div>
+      <div><div style="font-size:11px;color:#888">Destino</div><div>${c.lugar||'—'}</div></div>
+      <div><div style="font-size:11px;color:#888">Toneladas pactadas</div><div style="font-weight:600">${(parseFloat(c.tons)||0).toLocaleString('es-AR')} tn</div></div>
+      <div><div style="font-size:11px;color:#888">Precio</div><div style="font-weight:600">${c.precio==='0'||!c.precio?'<span class="badge badge-pending">A fijar</span>':c.moneda+' '+(parseFloat(c.precio)||0).toLocaleString('es-AR')+'/tn'}</div></div>
+      <div><div style="font-size:11px;color:#888">Total contrato</div><div style="font-weight:600">${c.precio==='0'||!c.precio?'—':c.moneda+' '+((parseFloat(c.tons)||0)*(parseFloat(c.precio)||0)).toLocaleString('es-AR')}</div></div>
+      <div><div style="font-size:11px;color:#888">Transportista</div><div>${c.trans||'—'} ${c.tel?'<div style="font-size:11px;color:#888">'+c.tel+'</div>':''}</div></div>
+      <div><div style="font-size:11px;color:#888">Condición flete</div><div>${c.pago||'—'} · ${c.estadopago||'—'}</div></div>
+      <div><div style="font-size:11px;color:#888">Factura</div><div style="font-size:12px">${c.factura||'Pendiente'}</div></div>
+    </div>
+    <div style="background:#f9f9f9;border-radius:8px;padding:10px 14px;margin-bottom:1rem">
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:6px">
+        <span style="font-weight:600">Cumplimiento: ${pct}%</span>
+        <span style="font-size:12px;color:#888">${tonEnt.toLocaleString('es-AR')} tn entregadas / ${(parseFloat(c.tons)||0).toLocaleString('es-AR')} tn pactadas · Restante: <strong style="color:${tonEnt<parseFloat(c.tons)?'#854F0B':'#1a5c38'}">${Math.max(0,(parseFloat(c.tons)||0)-tonEnt).toLocaleString('es-AR')} tn</strong></span>
+      </div>
+      <div class="progress-bar" style="width:100%;display:block;height:10px"><div class="progress-fill" style="width:${pct}%"></div></div>
+    </div>
+    ${c.obs?`<div style="font-size:12px;color:#666;background:#fffbe6;border:1px solid #FAC775;border-radius:6px;padding:8px 12px;margin-bottom:1rem"><i class="ti ti-notes"></i> ${c.obs}</div>`:''}
+    <div style="border-top:1px solid #eee;padding-top:1rem">
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px">
+        <span style="font-size:13px;font-weight:600"><i class="ti ti-truck"></i> Entregas registradas (${c.entregas?c.entregas.length:0} CPEs)</span>
+        <select onchange="contratos[${idx}].estado=this.value;save();renderTabla();" style="padding:4px 8px;border:1px solid #ddd;border-radius:6px;font-size:12px">
+          ${['Pendiente','En curso','Cumplido','Cancelado'].map(s=>`<option${c.estado===s?' selected':''}>${s}</option>`).join('')}
+        </select>
+      </div>
+      <div class="entrega-header"><span>Fecha</span><span>Tn</span><span>Remito / CPE</span><span>Chofer / Patente</span><span></span></div>
+      <div id="entregas-${idx}"></div>
+      <div class="entrega-row" style="margin-top:10px;background:#f9f9f9;border-radius:6px;padding:6px">
+        <input type="date" id="ent-fecha-${idx}" style="padding:5px 8px;border:1px solid #ddd;border-radius:6px;font-size:12px;width:100%">
+        <input type="number" placeholder="Tn" id="ent-tons-${idx}" style="padding:5px 8px;border:1px solid #ddd;border-radius:6px;font-size:12px;width:100%">
+        <input type="text" placeholder="Remito / CPE" id="ent-remito-${idx}" style="padding:5px 8px;border:1px solid #ddd;border-radius:6px;font-size:12px;width:100%">
+        <input type="text" placeholder="Chofer / Patente" id="ent-chofer-${idx}" style="padding:5px 8px;border:1px solid #ddd;border-radius:6px;font-size:12px;width:100%">
+        <button class="btn btn-success" style="font-size:12px;padding:5px 10px;white-space:nowrap" onclick="addEntrega(${idx})"><i class="ti ti-plus"></i> Agregar</button>
+      </div>
+    </div>
+  </div>`;
+  renderEntregas(idx);
+}
+
+function renderEntregas(idx){
+  const c=contratos[idx]; const el=document.getElementById('entregas-'+idx); if(!el)return;
+  if(!c.entregas||c.entregas.length===0){el.innerHTML='<div style="font-size:12px;color:#888;padding:6px 0">Sin entregas registradas aún.</div>';return;}
+  el.innerHTML=c.entregas.map((e,ei)=>`
+    <div class="entrega-row">
+      <span>${e.fecha||'—'}</span>
+      <span style="font-weight:600">${(parseFloat(e.tons)||0).toLocaleString('es-AR')} tn</span>
+      <span style="font-size:11px;color:#888">${e.remito||'—'}</span>
+      <span style="font-size:12px">${e.chofer||'—'}</span>
+      <button class="btn btn-danger" style="padding:2px 8px;font-size:11px" onclick="delEntrega(${idx},${ei})"><i class="ti ti-trash"></i></button>
+    </div>`).join('');
+}
+
+function addEntrega(idx){
+  const fecha=document.getElementById('ent-fecha-'+idx).value;
+  const tons=document.getElementById('ent-tons-'+idx).value;
+  const remito=document.getElementById('ent-remito-'+idx).value;
+  const chofer=document.getElementById('ent-chofer-'+idx).value;
+  if(!tons||parseFloat(tons)<=0)return;
+  if(!contratos[idx].entregas)contratos[idx].entregas=[];
+  contratos[idx].entregas.push({fecha,tons,remito,chofer});
+  const tot=contratos[idx].entregas.reduce((a,e)=>a+(parseFloat(e.tons)||0),0);
+  if(tot>=parseFloat(contratos[idx].tons))contratos[idx].estado='Cumplido';
+  else if(tot>0)contratos[idx].estado='En curso';
+  save(); renderEntregas(idx);
+  ['ent-tons-','ent-remito-','ent-chofer-'].forEach(p=>document.getElementById(p+idx).value='');
+}
+
+function delEntrega(idx,ei){contratos[idx].entregas.splice(ei,1);save();renderEntregas(idx);}
+
+function renderLogistica(){
+  const el=document.getElementById('log-list');
+  let lista = contratos.filter(c=>c.estado!=='Cancelado'&&c.estado!=='Cumplido');
+  if(filtroLogGrano) lista=lista.filter(c=>c.grano===filtroLogGrano);
+  lista.sort((a,b)=>diasParaVencer(a.vence)-diasParaVencer(b.vence));
+  if(lista.length===0){el.innerHTML='<div style="text-align:center;padding:2rem;color:#888">Sin contratos activos.</div>';return;}
+  el.innerHTML=lista.map(c=>{
+    const pct=calcCumplimiento(c);
+    const tonEnt=c.entregas?c.entregas.reduce((a,e)=>a+(parseFloat(e.tons)||0),0):0;
+    const tonRest=Math.max(0,(parseFloat(c.tons)||0)-tonEnt);
+    const viajes=c.tonsViaje&&c.tonsViaje>0?Math.ceil(tonRest/parseFloat(c.tonsViaje)):'—';
+    const dias=diasParaVencer(c.vence);
+    const urgencia=dias<=7?'urgente':dias<=15?'atencion':'ok';
+    const diasLabel=dias<=0?'<span style="color:#A32D2D;font-weight:700">¡VENCIDO!</span>':dias===1?'<span style="color:#A32D2D;font-weight:700">Vence mañana</span>':`Vence en <strong>${dias} días</strong>`;
+    return `<div class="log-card ${urgencia}">
+      <div style="display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:10px">
+        <div>
+          <span style="font-size:16px;font-weight:700">${c.num}</span>
+          <span style="font-size:13px;color:#666;margin-left:8px">${c.grano} · ${c.calidad||''}</span>
+          <div style="margin-top:2px">${estadoBadge(c.estado)} <span style="font-size:12px;color:#888;margin-left:8px">${diasLabel} · ${c.vence||'—'}</span></div>
+        </div>
+        <div style="text-align:right">
+          <div style="font-size:20px;font-weight:700;color:${pct>=100?'#1a5c38':pct>=60?'#185FA5':'#854F0B'}">${pct}%</div>
+          <div style="font-size:11px;color:#888">cumplimiento</div>
+        </div>
+      </div>
+      <div class="grid4" style="gap:10px;margin-bottom:10px;font-size:13px">
+        <div><div style="font-size:11px;color:#888">Comprador</div><div style="font-weight:600">${c.comprador}</div></div>
+        <div><div style="font-size:11px;color:#888">Destino</div><div>${c.lugar||'—'}</div></div>
+        <div><div style="font-size:11px;color:#888">Transportista</div><div>${c.trans||'—'}</div><div style="font-size:11px;color:#888">${c.tel||''}</div></div>
+        <div><div style="font-size:11px;color:#888">Camiones est.</div><div>${c.camiones||'—'} · ${c.tonsViaje||'—'} tn/viaje</div></div>
+      </div>
+      <div style="display:flex;align-items:center;gap:16px;background:#f9f9f9;border-radius:6px;padding:8px 12px">
+        <div class="progress-bar" style="flex:1;display:block;height:8px"><div class="progress-fill" style="width:${pct}%;background:${pct>=100?'#1a5c38':pct>=60?'#378ADD':'#EF9F27'}"></div></div>
+        <span style="font-size:12px;white-space:nowrap"><strong>${tonEnt.toLocaleString('es-AR')}</strong> tn entregadas</span>
+        <span style="font-size:12px;white-space:nowrap;color:${tonRest>0?'#854F0B':'#1a5c38'}"><strong>${tonRest.toLocaleString('es-AR')}</strong> tn restantes</span>
+        <span style="font-size:12px;white-space:nowrap">~<strong>${viajes}</strong> viaje${viajes!==1&&viajes!=='—'?'s':''} pendientes</span>
+      </div>
+    </div>`;
+  }).join('');
+}
+
+function guardarContrato(){
+  const num=document.getElementById('f-num').value.trim();
+  const comprador=document.getElementById('f-comprador').value.trim();
+  const vendedor=document.getElementById('f-vendedor').value.trim();
+  const tons=document.getElementById('f-tons').value;
+  const err=document.getElementById('form-error');
+  if(!num||!comprador||!vendedor||!tons){err.style.display='block';err.textContent='Completá al menos N° de contrato, comprador, vendedor y toneladas.';return;}
+  err.style.display='none';
+  const c={num,grano:document.getElementById('f-grano').value,calidad:document.getElementById('f-calidad').value,comprador,vendedor,tons,precio:document.getElementById('f-precio').value,moneda:document.getElementById('f-moneda').value,fecha:document.getElementById('f-fecha').value,vence:document.getElementById('f-vence').value,lugar:document.getElementById('f-lugar').value,obs:document.getElementById('f-obs').value,trans:document.getElementById('f-trans').value,tel:document.getElementById('f-tel').value,camiones:document.getElementById('f-camiones').value,tonsViaje:document.getElementById('f-tons-viaje').value,pago:document.getElementById('f-pago').value,factura:document.getElementById('f-factura').value,estadopago:document.getElementById('f-estadopago').value,estado:'Pendiente',entregas:[]};
+  if(contratoEditando){const idx=contratos.indexOf(contratoEditando);c.entregas=contratoEditando.entregas||[];c.estado=contratoEditando.estado||'Pendiente';contratos[idx]=c;contratoEditando=null;}
+  else contratos.push(c);
+  save();limpiarForm();showTab('contratos');
+}
+
+function editarContrato(idx){
+  const c=contratos[idx];contratoEditando=c;
+  const f=id=>document.getElementById(id);
+  f('f-num').value=c.num;f('f-grano').value=c.grano;f('f-calidad').value=c.calidad||'';
+  f('f-comprador').value=c.comprador;f('f-vendedor').value=c.vendedor;
+  f('f-tons').value=c.tons;f('f-precio').value=c.precio;f('f-moneda').value=c.moneda;
+  f('f-fecha').value=c.fecha;f('f-vence').value=c.vence;f('f-lugar').value=c.lugar||'';
+  f('f-obs').value=c.obs||'';f('f-trans').value=c.trans||'';f('f-tel').value=c.tel||'';
+  f('f-camiones').value=c.camiones||'';f('f-tons-viaje').value=c.tonsViaje||'';
+  f('f-pago').value=c.pago||'Contado';f('f-factura').value=c.factura||'';
+  f('f-estadopago').value=c.estadopago||'Pendiente';
+  showTab('nuevo');
+}
+
+function eliminarContrato(idx){
+  if(!confirm('¿Eliminar este contrato?'))return;
+  contratos.splice(idx,1);save();renderTabla();
+  document.getElementById('detalle-panel').innerHTML='';detalleAbierto=-1;
+}
+
+function limpiarForm(){
+  contratoEditando=null;
+  ['f-num','f-calidad','f-comprador','f-tons','f-precio','f-fecha','f-vence','f-lugar','f-obs','f-trans','f-tel','f-camiones','f-tons-viaje','f-factura'].forEach(id=>{const el=document.getElementById(id);if(el)el.value='';});
+  document.getElementById('f-vendedor').value='Estanar Estancias Arg. S.A.';
+  document.getElementById('form-error').style.display='none';
+}
+
+function exportCSV(){
+  const headers=['N° Contrato','Grano','Calidad','Comprador','Vendedor','Toneladas','Precio','Moneda','Fecha','Vencimiento','Lugar','Transportista','Telefono','Camiones','Tn x Viaje','Cond. Pago','Factura','Estado Pago','Estado','% Cumplimiento','Tn Entregadas','Observaciones'];
+  const rows=contratos.map(c=>{const tonEnt=c.entregas?c.entregas.reduce((a,e)=>a+(parseFloat(e.tons)||0),0):0;const pct=calcCumplimiento(c);return[c.num,c.grano,c.calidad||'',c.comprador,c.vendedor,c.tons,c.precio,c.moneda,c.fecha,c.vence,c.lugar||'',c.trans||'',c.tel||'',c.camiones||'',c.tonsViaje||'',c.pago||'',c.factura||'',c.estadopago||'',c.estado,pct,tonEnt.toFixed(2),c.obs||''];});
+  const csv=[headers,...rows].map(r=>r.map(v=>`"${String(v).replace(/"/g,'""')}"`).join(',')).join('\n');
+  const blob=new Blob(['\uFEFF'+csv],{type:'text/csv;charset=utf-8'});
+  const a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download='AgroContratos_Estanar_DEMO.csv';a.click();
+}
+
+renderDash();
+</script>
+</body>
+</html>
