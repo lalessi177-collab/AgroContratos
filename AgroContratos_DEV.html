@@ -1,0 +1,470 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AgroContratos — Estanar S.A.</title>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@2.44.0/tabler-icons.min.css">
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:Arial,sans-serif;font-size:14px;background:#f0f2f0;color:#1a1a1a}
+.app{max-width:1100px;margin:0 auto;padding:1rem}
+.topbar{background:#1a5c38;padding:0 20px;height:56px;display:flex;align-items:center;justify-content:space-between;border-radius:10px;margin-bottom:1rem}
+.bw{padding:5px 12px;border-radius:6px;font-size:12px;cursor:pointer;border:0.5px solid rgba(255,255,255,0.35);background:rgba(255,255,255,0.12);color:#fff}
+.bw:hover{background:rgba(255,255,255,0.22)}
+.bw-white{background:rgba(255,255,255,0.9);color:#1a5c38;font-weight:600;border:none}
+.sd{width:7px;height:7px;border-radius:50%;display:inline-block;margin-right:4px}
+.sd-green{background:#5DCAA5}
+.sd-red{background:#E53935}
+.sd-amber{background:#E8B84B}
+.tabs{display:flex;gap:0;border-bottom:1px solid #ddd;margin-bottom:1.5rem;background:#fff;border-radius:8px 8px 0 0;overflow:hidden}
+.tab{padding:10px 18px;cursor:pointer;font-size:13px;color:#666;border:none;background:none;border-bottom:2px solid transparent;white-space:nowrap}
+.tab.active{color:#1a5c38;border-bottom:2px solid #1a5c38;font-weight:600}
+.tab:hover:not(.active){background:#f9f9f9}
+.section{display:none}.section.active{display:block}
+.card{background:#fff;border:1px solid #e5e5e5;border-radius:10px;padding:1rem 1.25rem;margin-bottom:1rem}
+.card-title{font-size:11px;font-weight:600;color:#888;text-transform:uppercase;letter-spacing:0.05em;margin-bottom:12px}
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.grid3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px}
+.grid4{display:grid;grid-template-columns:repeat(4,1fr);gap:12px}
+.badge{display:inline-block;padding:2px 8px;border-radius:9999px;font-size:11px;font-weight:500}
+.badge-pending{background:#FAEEDA;color:#854F0B}
+.badge-partial{background:#E6F1FB;color:#185FA5}
+.badge-done{background:#EAF3DE;color:#3B6D11}
+.badge-cancelled{background:#FCEBEB;color:#A32D2D}
+.table-wrap{overflow-x:auto}
+table{width:100%;border-collapse:collapse;font-size:13px}
+th{text-align:left;padding:8px 10px;font-size:11px;font-weight:600;color:#888;border-bottom:1px solid #eee;white-space:nowrap;background:#fafafa}
+td{padding:8px 10px;border-bottom:1px solid #f0f0f0;vertical-align:middle}
+tr:hover td{background:#fafafa}
+.progress-bar{height:6px;background:#eee;border-radius:9999px;overflow:hidden;min-width:80px;display:inline-block;vertical-align:middle}
+.progress-fill{height:100%;background:#1a5c38;border-radius:9999px}
+.metric-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(130px,1fr));gap:12px;margin-bottom:1.5rem}
+.metric{background:#fff;border:1px solid #e5e5e5;border-radius:10px;padding:1rem;text-align:center}
+.metric-val{font-size:24px;font-weight:700}
+.metric-lbl{font-size:11px;color:#888;margin-top:4px}
+.alert-amber{background:#FAEEDA;color:#854F0B;border:1px solid #FAC775;padding:8px 12px;border-radius:8px;font-size:13px;margin-bottom:1rem}
+.alert-green{background:#EAF3DE;color:#3B6D11;border:1px solid #C0DD97;padding:8px 12px;border-radius:8px;font-size:13px;margin-bottom:1rem}
+.alert-red{background:#FCEBEB;color:#A32D2D;border:1px solid #F7C1C1;padding:8px 12px;border-radius:8px;font-size:13px;margin-bottom:1rem}
+.alert-blue{background:#E6F1FB;color:#185FA5;border:1px solid #B5D4F4;padding:8px 12px;border-radius:8px;font-size:13px;margin-bottom:1rem}
+.row-data{display:flex;justify-content:space-between;font-size:13px;padding:5px 0;border-bottom:1px solid #f0f0f0}
+.row-data:last-child{border-bottom:none}
+.row-data span:first-child{color:#888}
+.footer{background:#f5f5f5;border-top:1px solid #e5e5e5;padding:10px 20px;display:flex;align-items:center;justify-content:space-between;border-radius:0 0 10px 10px;margin-top:2rem}
+.log-card{background:#fff;border:1px solid #e5e5e5;border-radius:10px;padding:1rem 1.25rem;margin-bottom:10px}
+.log-card.urgente{border-left:4px solid #A32D2D}
+.log-card.atencion{border-left:4px solid #854F0B}
+.log-card.ok{border-left:4px solid #1a5c38}
+.spinner{display:inline-block;width:16px;height:16px;border:2px solid rgba(255,255,255,0.3);border-top-color:#fff;border-radius:50%;animation:spin 0.8s linear infinite;vertical-align:middle;margin-right:6px}
+@keyframes spin{to{transform:rotate(360deg)}}
+.empty{text-align:center;padding:3rem;color:#888;font-size:13px}
+</style>
+</head>
+<body>
+<div class="app">
+
+<div class="topbar">
+  <div style="display:flex;align-items:center;gap:16px">
+    <div style="border-right:0.5px solid rgba(255,255,255,0.3);padding-right:16px;line-height:1.15">
+      <div style="font-family:'Georgia',serif;font-size:20px;font-weight:700;color:#fff;letter-spacing:3px">ESTANAR</div>
+      <div style="font-family:'Georgia',serif;font-size:10px;color:rgba(255,255,255,0.75);letter-spacing:2.5px;text-align:right">S.A.</div>
+    </div>
+    <div>
+      <div style="font-size:14px;font-weight:500;color:#fff">AgroContratos</div>
+      <div style="font-size:11px;color:rgba(255,255,255,0.65)">Plataforma de logística y cumplimiento de granos</div>
+    </div>
+  </div>
+  <div style="display:flex;gap:8px;align-items:center">
+    <span id="conn-status" style="font-size:11px;color:rgba(255,255,255,0.7)"><span class="sd sd-amber"></span>Conectando...</span>
+    <button class="bw" onclick="sincronizar()"><i class="ti ti-refresh"></i> Actualizar</button>
+    <button class="bw bw-white" onclick="showTab('nuevo')"><i class="ti ti-plus"></i> Nuevo contrato</button>
+  </div>
+</div>
+
+<div class="tabs">
+  <button class="tab active" onclick="showTab('dashboard')"><i class="ti ti-layout-dashboard"></i> Dashboard</button>
+  <button class="tab" onclick="showTab('contratos')"><i class="ti ti-file-text"></i> Contratos</button>
+  <button class="tab" onclick="showTab('logistica')"><i class="ti ti-truck"></i> Logística</button>
+  <button class="tab" onclick="showTab('nuevo')"><i class="ti ti-plus"></i> Nuevo contrato</button>
+</div>
+
+<!-- DASHBOARD -->
+<div id="tab-dashboard" class="section active">
+  <div id="dash-content">
+    <div class="empty"><div class="spinner" style="border-color:rgba(0,0,0,0.1);border-top-color:#1a5c38;width:24px;height:24px"></div><br>Conectando con Finnegans...</div>
+  </div>
+</div>
+
+<!-- CONTRATOS -->
+<div id="tab-contratos" class="section">
+  <div id="contratos-content">
+    <div class="empty">Cargando contratos desde Finnegans...</div>
+  </div>
+</div>
+
+<!-- LOGÍSTICA -->
+<div id="tab-logistica" class="section">
+  <div id="log-list">
+    <div class="empty">Cargando datos de logística...</div>
+  </div>
+</div>
+
+<!-- NUEVO CONTRATO -->
+<div id="tab-nuevo" class="section">
+  <div class="alert-blue"><i class="ti ti-info-circle"></i> En modo conectado los contratos se sincronizan automáticamente desde Finnegans. Este formulario es para carga manual de contratos adicionales.</div>
+  <div class="card">
+    <div class="card-title">Datos del contrato</div>
+    <div class="grid3" style="gap:12px">
+      <div style="display:flex;flex-direction:column;gap:4px"><label style="font-size:12px;color:#666;font-weight:500">N° de contrato</label><input id="f-num" placeholder="Ej: 26S08" style="padding:7px 10px;border:1px solid #ddd;border-radius:6px;font-size:13px"></div>
+      <div style="display:flex;flex-direction:column;gap:4px"><label style="font-size:12px;color:#666;font-weight:500">Grano</label><select id="f-grano" style="padding:7px 10px;border:1px solid #ddd;border-radius:6px;font-size:13px"><option>Trigo</option><option>Maíz</option><option>Soja</option><option>Girasol</option><option>Cebada</option><option>Sorgo</option><option>Otro</option></select></div>
+      <div style="display:flex;flex-direction:column;gap:4px"><label style="font-size:12px;color:#666;font-weight:500">Calidad</label><input id="f-calidad" placeholder="Ej: Grado 2" style="padding:7px 10px;border:1px solid #ddd;border-radius:6px;font-size:13px"></div>
+    </div>
+    <div class="grid2" style="margin-top:12px">
+      <div style="display:flex;flex-direction:column;gap:4px"><label style="font-size:12px;color:#666;font-weight:500">Comprador</label><input id="f-comprador" style="padding:7px 10px;border:1px solid #ddd;border-radius:6px;font-size:13px"></div>
+      <div style="display:flex;flex-direction:column;gap:4px"><label style="font-size:12px;color:#666;font-weight:500">Vendedor</label><input id="f-vendedor" value="Estanar Estancias Arg. S.A." style="padding:7px 10px;border:1px solid #ddd;border-radius:6px;font-size:13px"></div>
+    </div>
+    <div class="grid3" style="margin-top:12px">
+      <div style="display:flex;flex-direction:column;gap:4px"><label style="font-size:12px;color:#666;font-weight:500">Toneladas</label><input id="f-tons" type="number" style="padding:7px 10px;border:1px solid #ddd;border-radius:6px;font-size:13px"></div>
+      <div style="display:flex;flex-direction:column;gap:4px"><label style="font-size:12px;color:#666;font-weight:500">Precio</label><input id="f-precio" type="number" style="padding:7px 10px;border:1px solid #ddd;border-radius:6px;font-size:13px"></div>
+      <div style="display:flex;flex-direction:column;gap:4px"><label style="font-size:12px;color:#666;font-weight:500">Moneda</label><select id="f-moneda" style="padding:7px 10px;border:1px solid #ddd;border-radius:6px;font-size:13px"><option>ARS</option><option>USD</option></select></div>
+    </div>
+    <div class="grid2" style="margin-top:12px">
+      <div style="display:flex;flex-direction:column;gap:4px"><label style="font-size:12px;color:#666;font-weight:500">Fecha contrato</label><input id="f-fecha" type="date" style="padding:7px 10px;border:1px solid #ddd;border-radius:6px;font-size:13px"></div>
+      <div style="display:flex;flex-direction:column;gap:4px"><label style="font-size:12px;color:#666;font-weight:500">Vencimiento</label><input id="f-vence" type="date" style="padding:7px 10px;border:1px solid #ddd;border-radius:6px;font-size:13px"></div>
+    </div>
+    <div style="display:flex;flex-direction:column;gap:4px;margin-top:12px"><label style="font-size:12px;color:#666;font-weight:500">Lugar de entrega</label><input id="f-lugar" style="padding:7px 10px;border:1px solid #ddd;border-radius:6px;font-size:13px"></div>
+    <div style="display:flex;flex-direction:column;gap:4px;margin-top:12px"><label style="font-size:12px;color:#666;font-weight:500">Observaciones</label><textarea id="f-obs" style="padding:7px 10px;border:1px solid #ddd;border-radius:6px;font-size:13px;min-height:60px;resize:vertical;width:100%"></textarea></div>
+  </div>
+  <div id="form-error" style="display:none" class="alert-amber"></div>
+  <div style="display:flex;gap:8px">
+    <button onclick="guardarManual()" style="padding:7px 14px;border-radius:6px;font-size:13px;cursor:pointer;background:#1a5c38;color:#fff;border:none"><i class="ti ti-check"></i> Guardar contrato</button>
+    <button onclick="limpiarForm()" style="padding:7px 14px;border-radius:6px;font-size:13px;cursor:pointer;border:1px solid #ddd;background:#fff">Limpiar</button>
+  </div>
+</div>
+
+<div class="footer">
+  <div style="display:flex;align-items:center;gap:8px">
+    <span style="font-family:'Georgia',serif;font-size:13px;font-weight:700;letter-spacing:2px;color:#1a5c38">ESTANAR</span>
+    <span style="font-size:11px;color:#888">Estancias Argentinas S.A.</span>
+  </div>
+  <div style="display:flex;align-items:center;gap:6px;font-size:11px;color:#888">
+    Desarrollado por
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 160 44" style="height:16px;vertical-align:middle">
+      <circle cx="14" cy="14" r="7" fill="#E8B84B"/>
+      <circle cx="30" cy="14" r="9" fill="#1a1a1a"/>
+      <line x1="14" y1="14" x2="30" y2="14" stroke="#1a1a1a" stroke-width="2"/>
+      <circle cx="22" cy="30" r="9" fill="#1a1a1a"/>
+      <circle cx="38" cy="30" r="7" fill="#E8B84B"/>
+      <line x1="30" y1="14" x2="22" y2="30" stroke="#1a1a1a" stroke-width="2"/>
+      <text x="48" y="34" font-family="Georgia,serif" font-size="26" font-weight="700" fill="#1a1a1a">L5A.IO</text>
+    </svg>
+  </div>
+</div>
+
+</div>
+
+<script>
+const PROXY_URL = 'https://rapid-surf-1433.lalessi177.workers.dev';
+
+let contratos = [];
+let manuales = JSON.parse(localStorage.getItem('agro_dev_manuales') || '[]');
+let ultimaSync = null;
+let filtroEstado = '', filtroGrano = '';
+
+async function getToken() { return true; }
+
+async function getContratos() {
+  try {
+    const res = await fetch(PROXY_URL);
+    if (!res.ok) throw new Error('HTTP ' + res.status);
+    const data = await res.json();
+    return Array.isArray(data) ? data : [];
+  } catch (e) {
+    console.error('Error trayendo contratos:', e);
+    return [];
+  }
+}
+
+
+function mapContrato(c) {
+  let grano = c.PRODUCTO || '—';
+  if (grano.toLowerCase().includes('soja')) grano = 'Soja';
+  else if (grano.toLowerCase().includes('maíz') || grano.toLowerCase().includes('maiz')) grano = 'Maíz';
+  else if (grano.toLowerCase().includes('trigo')) grano = 'Trigo';
+  else if (grano.toLowerCase().includes('girasol')) grano = 'Girasol';
+  else if (grano.toLowerCase().includes('cebada')) grano = 'Cebada';
+  else if (grano.toLowerCase().includes('sorgo')) grano = 'Sorgo';
+
+  return {
+    num: c.NOMBRE || c.IDENTIFIACIONEXTERNA || String(c.NUMINTERNO),
+    grano,
+    calidad: c.COSECHA || '',
+    comprador: c.CLIENTE || '—',
+    vendedor: 'Estanar Estancias Arg. S.A.',
+    tons: '0', precio: '0', moneda: 'USD',
+    fecha: '', vence: '',
+    lugar: c.DEPOSITO || '—',
+    obs: c.NUMERODOCUMENTO || '',
+    pago: c['CONDICIÓN DE PAGO'] || '—',
+    factura: c.NROCONTRATO || '',
+    estadopago: 'Pendiente',
+    estado: 'En curso',
+    entregado: 0, pendiente: 0, pct: 0,
+    finnegansId: c.NUMINTERNO,
+    fuenteFinnegans: true
+  };
+}
+
+async function sincronizar() {
+  setStatus('amber', 'Conectando...');
+  const tokenOk = await getToken();
+  if (!tokenOk) {
+    setStatus('red', 'Error de conexión');
+    renderError('No se pudo conectar con Finnegans. Verificá tu conexión a internet.');
+    return;
+  }
+  const data = await getContratos();
+  if (data.length === 0) {
+    setStatus('red', 'Sin datos');
+    renderError('Finnegans no devolvió contratos. Verificá los permisos del token.');
+    return;
+  }
+  contratos = data.map(mapContrato);
+  ultimaSync = new Date().toLocaleTimeString('es-AR');
+  setStatus('green', 'Sincronizado ' + ultimaSync);
+  renderDash();
+  renderTabla();
+  renderLogistica();
+}
+
+function setStatus(color, text) {
+  const el = document.getElementById('conn-status');
+  el.innerHTML = `<span class="sd sd-${color}"></span>${text}`;
+}
+
+function renderError(msg) {
+  document.getElementById('dash-content').innerHTML = `<div class="alert-red"><i class="ti ti-alert-circle"></i> ${msg}</div>`;
+}
+
+function showTab(t) {
+  document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
+  document.querySelectorAll('.tab').forEach(b => b.classList.remove('active'));
+  document.getElementById('tab-' + t).classList.add('active');
+  document.querySelectorAll('.tab').forEach(b => { if (b.getAttribute('onclick') === `showTab('${t}')`) b.classList.add('active'); });
+}
+
+function estadoBadge(e) {
+  const m = { 'Pendiente': 'badge-pending', 'En curso': 'badge-partial', 'Cumplido': 'badge-done', 'Cancelado': 'badge-cancelled' };
+  return `<span class="badge ${m[e] || 'badge-pending'}">${e}</span>`;
+}
+
+function pb(pct, w) {
+  const color = pct >= 100 ? '#1a5c38' : pct >= 50 ? '#378ADD' : '#EF9F27';
+  return `<div style="display:flex;align-items:center;gap:6px"><div class="progress-bar" style="width:${w || 80}px"><div class="progress-fill" style="width:${pct}%;background:${color}"></div></div><span style="font-size:11px;color:#888">${pct}%</span></div>`;
+}
+
+function diasParaVencer(vence) {
+  if (!vence) return 999;
+  const hoy = new Date(); hoy.setHours(0, 0, 0, 0);
+  // Formato DD-MM-YYYY de Finnegans
+  const parts = vence.split('-');
+  let v;
+  if (parts.length === 3 && parts[0].length === 2) {
+    v = new Date(`${parts[2]}-${parts[1]}-${parts[0]}T00:00:00`);
+  } else {
+    v = new Date(vence + 'T00:00:00');
+  }
+  return Math.round((v - hoy) / (1000 * 60 * 60 * 24));
+}
+
+function formatFecha(f) {
+  if (!f) return '—';
+  // Finnegans devuelve DD-MM-YYYY
+  return f.replace(/-/g, '/');
+}
+
+function renderDash() {
+  const todos = [...contratos, ...manuales];
+  if (todos.length === 0) { document.getElementById('dash-content').innerHTML = '<div class="empty">Sin contratos.</div>'; return; }
+
+  const enCurso = todos.filter(c => c.estado === 'En curso').length;
+  const pendiente = todos.filter(c => c.estado === 'Pendiente').length;
+  const cumplido = todos.filter(c => c.estado === 'Cumplido').length;
+  const tonTotal = todos.reduce((a, c) => a + (parseFloat(c.tons) || 0), 0);
+  const tonEnt = todos.reduce((a, c) => a + (parseFloat(c.entregado) || 0), 0);
+
+  const porVencer = todos.filter(c => c.estado !== 'Cumplido' && c.estado !== 'Cancelado')
+    .map(c => ({ ...c, dias: diasParaVencer(c.vence) }))
+    .filter(c => c.dias <= 30)
+    .sort((a, b) => a.dias - b.dias);
+
+  const granos = {};
+  todos.forEach(c => {
+    if (!granos[c.grano]) granos[c.grano] = { tons: 0, entregado: 0, contratos: 0 };
+    granos[c.grano].tons += parseFloat(c.tons) || 0;
+    granos[c.grano].entregado += parseFloat(c.entregado) || 0;
+    granos[c.grano].contratos++;
+  });
+
+  document.getElementById('dash-content').innerHTML = `
+    <div class="metric-grid">
+      <div class="metric"><div class="metric-val">${todos.length}</div><div class="metric-lbl">Contratos totales</div></div>
+      <div class="metric"><div class="metric-val" style="color:#185FA5">${enCurso}</div><div class="metric-lbl">En curso</div></div>
+      <div class="metric"><div class="metric-val" style="color:#854F0B">${pendiente}</div><div class="metric-lbl">Pendientes</div></div>
+      <div class="metric"><div class="metric-val" style="color:#1a5c38">${cumplido}</div><div class="metric-lbl">Cumplidos</div></div>
+      <div class="metric"><div class="metric-val">${tonTotal.toLocaleString('es-AR')}</div><div class="metric-lbl">Tn contratadas</div></div>
+      <div class="metric"><div class="metric-val" style="color:#1a5c38">${Math.round(tonEnt).toLocaleString('es-AR')}</div><div class="metric-lbl">Tn entregadas</div></div>
+    </div>
+    <div class="grid2">
+      <div class="card">
+        <div class="card-title"><i class="ti ti-alert-triangle"></i> Por vencer (30 días)</div>
+        ${porVencer.length === 0
+          ? '<div style="text-align:center;padding:1.5rem;color:#888;font-size:13px">Sin contratos por vencer en 30 días</div>'
+          : porVencer.map(c => {
+              const color = c.dias <= 7 ? '#A32D2D' : c.dias <= 15 ? '#854F0B' : '#666';
+              return `<div style="display:flex;justify-content:space-between;align-items:center;padding:8px 0;border-bottom:1px solid #f0f0f0">
+                <div><span style="font-weight:600">${c.num}</span> <span style="font-size:11px;background:#f0f0f0;padding:1px 6px;border-radius:4px;margin-left:4px">${c.grano}</span> ${pb(c.pct, 60)}</div>
+                <div style="text-align:right"><div style="font-size:12px;color:${color};font-weight:600">${c.dias <= 0 ? '¡VENCIDO!' : 'Vence en ' + c.dias + ' días'}</div><div style="font-size:11px;color:#888">${formatFecha(c.vence)}</div></div>
+              </div>`;
+            }).join('')}
+      </div>
+      <div class="card">
+        <div class="card-title"><i class="ti ti-chart-bar"></i> Cumplimiento por grano</div>
+        ${Object.entries(granos).map(([g, d]) => {
+          const pct = d.tons > 0 ? Math.min(100, Math.round(d.entregado / d.tons * 100)) : 0;
+          const color = pct >= 100 ? '#1a5c38' : pct >= 60 ? '#378ADD' : '#EF9F27';
+          return `<div style="margin-bottom:12px">
+            <div style="display:flex;justify-content:space-between;font-size:12px;margin-bottom:4px">
+              <span style="font-weight:600">${g} <span style="font-weight:400;color:#888">(${d.contratos} cto${d.contratos !== 1 ? 's' : ''})</span></span>
+              <span style="color:#888">${Math.round(d.entregado).toLocaleString('es-AR')} / ${Math.round(d.tons).toLocaleString('es-AR')} tn</span>
+            </div>
+            <div class="progress-bar" style="height:10px;width:100%;display:block"><div class="progress-fill" style="width:${pct}%;background:${color}"></div></div>
+            <div style="font-size:11px;color:#888;text-align:right;margin-top:2px">${pct}% cumplido</div>
+          </div>`;
+        }).join('')}
+      </div>
+    </div>`;
+}
+
+function renderTabla() {
+  const todos = [...contratos, ...manuales];
+  const el = document.getElementById('contratos-content');
+  if (todos.length === 0) { el.innerHTML = '<div class="empty">Sin contratos.</div>'; return; }
+  el.innerHTML = `
+    <div style="display:flex;gap:8px;margin-bottom:1rem;flex-wrap:wrap;align-items:center">
+      <input type="text" placeholder="Buscar..." id="search-input" oninput="renderTabla()" style="flex:1;min-width:200px;padding:7px 10px;border:1px solid #ddd;border-radius:6px;font-size:13px">
+      <select onchange="filtroEstado=this.value;renderTabla()" style="padding:7px 10px;border:1px solid #ddd;border-radius:6px;font-size:13px">
+        <option value="">Todos los estados</option>
+        <option>Pendiente</option><option>En curso</option><option>Cumplido</option><option>Cancelado</option>
+      </select>
+      <select onchange="filtroGrano=this.value;renderTabla()" style="padding:7px 10px;border:1px solid #ddd;border-radius:6px;font-size:13px">
+        <option value="">Todos los granos</option>
+        <option>Soja</option><option>Maíz</option><option>Trigo</option><option>Girasol</option><option>Cebada</option><option>Sorgo</option>
+      </select>
+    </div>
+    <div class="table-wrap">
+      <table>
+        <thead><tr>
+          <th>N° Contrato</th><th>Grano</th><th>Comprador</th><th>Tn</th><th>Entregado</th><th>Pendiente</th><th>Vencimiento</th><th>Cumplimiento</th><th>Estado</th><th>Fuente</th>
+        </tr></thead>
+        <tbody>${todos.filter(c => {
+          const q = (document.getElementById('search-input') || {}).value || '';
+          const match = !q || (c.num + c.comprador).toLowerCase().includes(q.toLowerCase());
+          return match && (!filtroEstado || c.estado === filtroEstado) && (!filtroGrano || c.grano === filtroGrano);
+        }).map(c => {
+          const dias = diasParaVencer(c.vence);
+          const vColor = dias <= 7 && c.estado !== 'Cumplido' ? 'color:#A32D2D;font-weight:600' : dias <= 15 && c.estado !== 'Cumplido' ? 'color:#854F0B' : '';
+          return `<tr>
+            <td style="font-weight:600">${c.num}</td>
+            <td>${c.grano}</td>
+            <td style="font-size:12px">${c.comprador}</td>
+            <td>${(parseFloat(c.tons) || 0).toLocaleString('es-AR')}</td>
+            <td style="color:#1a5c38;font-weight:500">${(parseFloat(c.entregado) || 0).toLocaleString('es-AR')} tn</td>
+            <td style="color:${(parseFloat(c.pendiente) || 0) > 0 ? '#854F0B' : '#888'}">${(parseFloat(c.pendiente) || 0).toLocaleString('es-AR')} tn</td>
+            <td style="font-size:12px;${vColor}">${formatFecha(c.vence)}</td>
+            <td>${pb(c.pct || 0, 70)}</td>
+            <td>${estadoBadge(c.estado)}</td>
+            <td><span style="font-size:10px;background:${c.fuenteFinnegans ? '#E6F1FB' : '#f0f0f0'};color:${c.fuenteFinnegans ? '#185FA5' : '#888'};padding:2px 6px;border-radius:4px">${c.fuenteFinnegans ? 'Finnegans' : 'Manual'}</span></td>
+          </tr>`;
+        }).join('')}</tbody>
+      </table>
+    </div>`;
+}
+
+function renderLogistica() {
+  const todos = [...contratos, ...manuales].filter(c => c.estado !== 'Cancelado' && c.estado !== 'Cumplido');
+  todos.sort((a, b) => diasParaVencer(a.vence) - diasParaVencer(b.vence));
+  const el = document.getElementById('log-list');
+  if (todos.length === 0) { el.innerHTML = '<div class="empty">Sin contratos activos.</div>'; return; }
+  el.innerHTML = todos.map(c => {
+    const dias = diasParaVencer(c.vence);
+    const urgencia = dias <= 7 ? 'urgente' : dias <= 15 ? 'atencion' : 'ok';
+    const diasLabel = dias <= 0 ? '<span style="color:#A32D2D;font-weight:700">¡VENCIDO!</span>' : dias === 1 ? '<span style="color:#A32D2D;font-weight:700">Vence mañana</span>' : `Vence en <strong>${dias} días</strong>`;
+    const pct = c.pct || 0;
+    const entregado = parseFloat(c.entregado) || 0;
+    const pendiente = parseFloat(c.pendiente) || 0;
+    return `<div class="log-card ${urgencia}">
+      <div style="display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:10px">
+        <div>
+          <span style="font-size:16px;font-weight:700">${c.num}</span>
+          <span style="font-size:13px;color:#666;margin-left:8px">${c.grano} · ${c.calidad || ''}</span>
+          <div style="margin-top:2px">${estadoBadge(c.estado)} <span style="font-size:12px;color:#888;margin-left:8px">${diasLabel} · ${formatFecha(c.vence)}</span></div>
+        </div>
+        <div style="text-align:right">
+          <div style="font-size:20px;font-weight:700;color:${pct >= 100 ? '#1a5c38' : pct >= 60 ? '#185FA5' : '#854F0B'}">${pct}%</div>
+          <div style="font-size:11px;color:#888">cumplimiento</div>
+        </div>
+      </div>
+      <div class="grid4" style="gap:10px;margin-bottom:10px;font-size:13px">
+        <div><div style="font-size:11px;color:#888">Comprador</div><div style="font-weight:600">${c.comprador}</div></div>
+        <div><div style="font-size:11px;color:#888">Destino</div><div>${c.lugar || '—'}</div></div>
+        <div><div style="font-size:11px;color:#888">Tn entregadas</div><div style="font-weight:600;color:#1a5c38">${entregado.toLocaleString('es-AR')} tn</div></div>
+        <div><div style="font-size:11px;color:#888">Tn pendientes</div><div style="font-weight:600;color:${pendiente > 0 ? '#854F0B' : '#1a5c38'}">${pendiente.toLocaleString('es-AR')} tn</div></div>
+      </div>
+      <div style="background:#f9f9f9;border-radius:6px;padding:6px 10px">
+        <div class="progress-bar" style="width:100%;display:block;height:8px"><div class="progress-fill" style="width:${pct}%;background:${pct >= 100 ? '#1a5c38' : pct >= 60 ? '#378ADD' : '#EF9F27'}"></div></div>
+      </div>
+      ${c.obs ? `<div style="margin-top:8px;font-size:12px;color:#666;font-style:italic">${c.obs}</div>` : ''}
+    </div>`;
+  }).join('');
+}
+
+function guardarManual() {
+  const num = document.getElementById('f-num').value.trim();
+  const comprador = document.getElementById('f-comprador').value.trim();
+  const tons = document.getElementById('f-tons').value;
+  const err = document.getElementById('form-error');
+  if (!num || !comprador || !tons) { err.style.display = 'block'; err.textContent = 'Completá N° de contrato, comprador y toneladas.'; return; }
+  err.style.display = 'none';
+  const c = {
+    num, grano: document.getElementById('f-grano').value,
+    calidad: document.getElementById('f-calidad').value,
+    comprador, vendedor: document.getElementById('f-vendedor').value,
+    tons, precio: document.getElementById('f-precio').value,
+    moneda: document.getElementById('f-moneda').value,
+    fecha: document.getElementById('f-fecha').value,
+    vence: document.getElementById('f-vence').value,
+    lugar: document.getElementById('f-lugar').value,
+    obs: document.getElementById('f-obs').value,
+    estado: 'Pendiente', entregado: 0, pendiente: parseFloat(tons) || 0, pct: 0,
+    fuenteFinnegans: false
+  };
+  manuales.push(c);
+  localStorage.setItem('agro_dev_manuales', JSON.stringify(manuales));
+  limpiarForm();
+  showTab('contratos');
+  renderTabla();
+  renderDash();
+}
+
+function limpiarForm() {
+  ['f-num', 'f-calidad', 'f-comprador', 'f-tons', 'f-precio', 'f-fecha', 'f-vence', 'f-lugar', 'f-obs'].forEach(id => { const el = document.getElementById(id); if (el) el.value = ''; });
+  document.getElementById('f-vendedor').value = 'Estanar Estancias Arg. S.A.';
+  document.getElementById('form-error').style.display = 'none';
+}
+
+// Arrancar
+sincronizar();
+</script>
+</body>
+</html>
